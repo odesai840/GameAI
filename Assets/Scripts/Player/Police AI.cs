@@ -12,10 +12,17 @@ public class PoliceAI : MonoBehaviour
     LineRenderer lineRenderer;
 
     Vector2 playerPosition;
-    Vector2 selfPosition;
+    //Vector2 selfPosition;
 
     float distanceToPlayer;
     Vector2 dirToPlayer; // direction to player
+
+    //Ray ray = new Ray(rb.position, transform.forward);
+    RaycastHit hit;
+
+    [Tooltip("Lower Number = Higher Accuracy    ")]
+    public int navigationAccuracy = 10;
+    int pointsOnLine;
 
     // Start is called before the first frame update
     void Start()
@@ -40,7 +47,8 @@ public class PoliceAI : MonoBehaviour
 
     void FixedUpdate()
     {
-
+        lineRenderer.positionCount = (int)(distanceToPlayer / navigationAccuracy); // draw more points for higher accuracy
+        pointsOnLine = lineRenderer.positionCount;
     }
 
     private void CheckPlayerLocation()
@@ -62,13 +70,40 @@ public class PoliceAI : MonoBehaviour
         Vector3 direction = new Vector3(dirToPlayer.x, dirToPlayer.y, 0);
 
         // Draw a line from the enemy to the player
-        Debug.DrawRay(origin, direction, Color.red);
+        Debug.DrawRay(origin, direction/10, Color.red);
         ////////////////////////////////////////////
 
         //////////// For Game View ////////////////
-        lineRenderer.SetPosition(0, rb.position);
-        lineRenderer.SetPosition(1, playerPosition);
+        ///
+        /*
+        for (int i = 0; i <= pointsOnLine; i++)
+        {
+            if (Physics.Raycast2D(ray, out hit, 100f))
+
+
+
+                lineRenderer.SetPosition(i, rb.position + );
+
+
+            //lineRenderer.SetPosition(, playerPosition);
+        }
+        
         ///////////////////////////////////////////
+        ///
+
+
+        // 1. get direction to player
+        // 2. draw raycast short length in direction to player
+        // 3. check if the end of raycast collides with obstacle
+        // 4. if not, repeat step 1 from the end of previous raycast
+        // 5. if does, point ray to right slightly
+            // if works go back to step one
+            // if not check left side
+        
+        // end when last raycast reaches player
+        
+        */
+
     }
 
 }

@@ -430,7 +430,7 @@ GameObject:
   - component: {fileID: 1529093284}
   - component: {fileID: 1529093285}
   m_Layer: 0
-  m_Name: 9-Sliced
+  m_Name: Police
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -449,6 +449,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 1543037850}
+  navigationAccuracy: 10
 --- !u!212 &1529093282
 SpriteRenderer:
   m_ObjectHideFlags: 0
