@@ -6,6 +6,7 @@ public class PlayerController : MonoBehaviour
 {
     [SerializeField] private float moveSpeed = 16f;
     [SerializeField] private float turnSpeed = 200f;
+    [SerializeField] private ParticleSystem exhaustParticles;
 
     PlayerControls playerControls;
     Rigidbody2D rb;
@@ -32,6 +33,21 @@ public class PlayerController : MonoBehaviour
     private void Update()
     {
         ProcessInputs();
+
+        if (moveInput != 0f)
+        {
+            if (!exhaustParticles.isPlaying)
+            {
+                exhaustParticles.Play();
+            }
+        }
+        else
+        {
+            if (exhaustParticles.isPlaying)
+            {
+                exhaustParticles.Stop();
+            }
+        }
     }
 
     private void FixedUpdate()
@@ -44,7 +60,11 @@ public class PlayerController : MonoBehaviour
     {
         Vector2 movement = playerControls.Movement.Move.ReadValue<Vector2>();
         moveInput = movement.y;
-        turnInput = movement.x;
+        turnInput = 0f;
+        if (moveInput != 0f)
+        {
+            turnInput = movement.x;
+        }
     }
 
     private void Move()
