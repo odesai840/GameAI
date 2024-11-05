@@ -38,10 +38,7 @@ public class PlayerHealth : MonoBehaviour
     void Update()
     {
         health = Mathf.Clamp(health, 0f, maxHealth);
-        if (Input.GetKeyDown(KeyCode.G))
-        {
-            TakeDamage(5);
-        }
+        Debug.Log(health);
         UpdateHealthUI();
     }
 
@@ -53,6 +50,5 @@ public class PlayerHealth : MonoBehaviour
     public void TakeDamage(float damage)
     {
         health -= damage;
-        Debug.Log(health);
     }
 }

@@ -41,7 +41,6 @@ public class PlayerController : MonoBehaviour
             {
                 idleParticles.Stop();
                 exhaustParticles.Play();
-                
             }
         }
         else
@@ -67,7 +66,14 @@ public class PlayerController : MonoBehaviour
         turnInput = 0f;
         if (moveInput != 0f)
         {
-            turnInput = movement.x;
+            if (moveInput < 0)
+            {
+                turnInput = -movement.x;
+            }
+            else
+            {
+                turnInput = movement.x;
+            }
         }
     }
 
