@@ -7,6 +7,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float moveSpeed = 16f;
     [SerializeField] private float turnSpeed = 200f;
     [SerializeField] private ParticleSystem exhaustParticles;
+    [SerializeField] private ParticleSystem idleParticles;
 
     PlayerControls playerControls;
     Rigidbody2D rb;
@@ -38,7 +39,9 @@ public class PlayerController : MonoBehaviour
         {
             if (!exhaustParticles.isPlaying)
             {
+                idleParticles.Stop();
                 exhaustParticles.Play();
+                
             }
         }
         else
@@ -46,6 +49,7 @@ public class PlayerController : MonoBehaviour
             if (exhaustParticles.isPlaying)
             {
                 exhaustParticles.Stop();
+                idleParticles.Play();
             }
         }
     }

@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 6739933011854536953}
   - component: {fileID: 2305181476663711057}
   - component: {fileID: 7399358673553500886}
+  - component: {fileID: 6638460447838511256}
   m_Layer: 0
   m_Name: Tree fall
   m_TagString: Untagged
@@ -120,3 +121,16 @@ CapsuleCollider2D:
   m_Offset: {x: -0.004335963, y: -0.19066133}
   m_Size: {x: 0.1775337, y: 0.09948424}
   m_Direction: 1
+--- !u!114 &6638460447838511256
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2254807186788989120}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 618798cf41bc46d4d9fe4a15fc0f64d8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  damage: 10
