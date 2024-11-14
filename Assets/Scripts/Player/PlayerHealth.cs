@@ -38,7 +38,7 @@ public class PlayerHealth : MonoBehaviour
     void Update()
     {
         health = Mathf.Clamp(health, 0f, maxHealth);
-        Debug.Log(health);
+        //Debug.Log(health);
         UpdateHealthUI();
     }
 
