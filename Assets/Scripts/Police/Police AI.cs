@@ -16,13 +16,27 @@ public class PoliceAI : MonoBehaviour
     Vector2 playerPosition;
     float distanceToPlayer;
     Vector2 dirToPlayer; // direction to player
-    
+    private List<Vector2> wayPoints = new List<Vector2>(); // List of all points on path
+
+    [SerializeField] private int maxIterations = 30; // Max iterations for waypoint generation
+    private int currentIteration = 0;
 
     [Tooltip("Lower Number = Higher Accuracy")]
     public int rayCastDistance = 1;
     int pointsOnLine;
     [Tooltip("Radius of circle that police AI will check for collisions")]
     public float checkRadius = 0.5f;
+
+    // Movement things
+    [SerializeField] private float moveSpeed = 15f;
+    private int currentWaypointIndex = 0;
+
+    // Collision things
+    [Tooltip("Damage dealt to player")]
+    [SerializeField] private float damageToOthers = 1f;
+    [Tooltip("Wait time for damage over time")]
+    [SerializeField] private float DoTWaitTime = 0.5f;
+    private Coroutine damageCoroutine;
 
     // Colliders to avoid
     private Collider2D playerCollider;
@@ -40,13 +54,11 @@ public class PoliceAI : MonoBehaviour
         // Colliders to avoid
         playerCollider = player.GetComponent<Collider2D>();
         selfCollider = GetComponent<Collider2D>();
-
-        
     }
     void Update()
     {
         CheckPlayerLocation();
-        DeleteAllWaypoints();
+        //DeleteAllWaypoints(); // TESTING
         Pathfind();
     }
 
@@ -54,9 +66,62 @@ public class PoliceAI : MonoBehaviour
     {
         lineRenderer.positionCount = (int)(distanceToPlayer / rayCastDistance); // draw more points for higher accuracy
         pointsOnLine = lineRenderer.positionCount;
-      
+        MoveAlongWaypoints();
+    }
 
-        //DrawLineToPlayer();
+    private void OnCollisionEnter2D(Collision2D other)
+    {
+        if (other.collider.CompareTag("Player"))
+        {
+            PlayerHealth playerHealth = other.collider.GetComponent<PlayerHealth>();
+            if (playerHealth && damageCoroutine == null)
+            {
+                damageCoroutine = StartCoroutine(DealDamageOverTime(playerHealth));
+            }
+        }
+    }
+
+    private void OnCollisionExit2D(Collision2D other)
+    {
+        if (other.collider.CompareTag("Player"))
+        {
+            PlayerHealth playerHealth = other.collider.GetComponent<PlayerHealth>();
+            if (playerHealth && damageCoroutine != null)
+            {
+                StopCoroutine(damageCoroutine);
+                damageCoroutine = null;
+            }
+        }
+    }
+
+    private IEnumerator DealDamageOverTime(PlayerHealth playerHealth)
+    {
+        while (true)
+        {
+            playerHealth.TakeDamage(damageToOthers);
+            yield return new WaitForSeconds(DoTWaitTime);
+        }
+    }
+
+    private void MoveAlongWaypoints()
+    {
+        if (currentWaypointIndex >= wayPoints.Count) return;
+
+        Vector2 targetPosition = wayPoints[currentWaypointIndex];
+
+        // Move toward the current waypoint
+        Vector2 moveDirection = (targetPosition - rb.position).normalized;
+        rb.MovePosition(rb.position + moveDirection * moveSpeed * Time.fixedDeltaTime);
+
+        // Rotate the police AI to face the player
+        float angle = Mathf.Atan2(moveDirection.y, moveDirection.x) * Mathf.Rad2Deg;
+        rb.rotation = angle - 90f;  // Adjust for sprite rotation
+
+        // Check if the police AI reached the waypoint
+        if (Vector2.Distance(rb.position, targetPosition) <= 0.1f)
+        {
+            currentWaypointIndex++;
+        }
     }
 
     private void CheckPlayerLocation()
@@ -68,13 +133,15 @@ public class PoliceAI : MonoBehaviour
     }
     private void Pathfind()
     {
-        ArrayList wayPoints = new ArrayList();  // List of all points on path
+        wayPoints.Clear(); // Clear the list of waypoints
 
         int wayPointsNeeded = (int)(distanceToPlayer / rayCastDistance); // Number of waypoints needed
         Vector2 rayCastEndpoint = rb.position + dirToPlayer * rayCastDistance; // Start position
         wayPoints.Add(rayCastEndpoint); // Add start position to the list
 
         float angleStep = 10.0f; // The angle to add after a failed collision check
+
+        currentIteration = 0;
 
         for (int i = 0; i < wayPointsNeeded; i++)
         {
@@ -84,7 +151,7 @@ public class PoliceAI : MonoBehaviour
             float angleOffsetLeft = 0.0f;
             float angleOffsetRight = 0.0f;
 
-            while (!foundClearPath)
+            while (!foundClearPath && currentIteration < maxIterations)
             {
                 Vector2 previousPoint = rayCastEndpoint; // store current endpoint if need to reverse
 
@@ -140,34 +207,18 @@ public class PoliceAI : MonoBehaviour
                     angleOffsetRight -= angleStep;
                 }
 
-
+                currentIteration++; // Prevent excessive waypoint generation
 
                 // FOR VISUAL TESTING //
                 if (foundClearPath) 
                 {
                     wayPoints.Add(rayCastEndpoint);
-                    GameObject waypoint = Instantiate(waypointCircle, rayCastEndpoint, Quaternion.identity);
-                    waypointObjects.Add(waypoint);
+                    //GameObject waypoint = Instantiate(waypointCircle, rayCastEndpoint, Quaternion.identity);
+                    //waypointObjects.Add(waypoint);
                 }
             }
         }
     }
-
-    ///////////////////// UNUSED, could be used if way points are farther apart ////////////////////
-    bool CheckCollisionBetweenPoints(Vector2 start, Vector2 end) // check for collision in between two points
-    {
-        Vector2 direction = (end - start).normalized; 
-        float distance = Vector2.Distance(start, end); 
-
-        // Perform the raycast
-        RaycastHit2D hit = Physics2D.Raycast(start, direction, distance);
-
-        // Check if the raycast hit anything
-        return hit.collider != null;
-    }
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-
-
 
     // for visual testing, delete visual way points so game doesnt crash instantly
     private void DeleteAllWaypoints()
@@ -179,5 +230,4 @@ public class PoliceAI : MonoBehaviour
 
         waypointObjects.Clear();
     }
-
 }

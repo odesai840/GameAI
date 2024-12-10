@@ -623,14 +623,17 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 270753213}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fd2b9178eb99acc418e6b85229e15f7a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 1543037850}
+  maxIterations: 30
   rayCastDistance: 1
   checkRadius: 0.5
+  moveSpeed: 15
+  damageToOthers: 1
   waypointCircle: {fileID: 7864620073621150078, guid: a0be5594796721e44a110e568d44f452, type: 3}
 --- !u!212 &270753217
 SpriteRenderer:
@@ -2247,63 +2250,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4566201071196830945, guid: ca63139e84d77ec4fbf437e9fb5c3c50, type: 3}
   m_PrefabInstance: {fileID: 1841426223}
   m_PrefabAsset: {fileID: 0}
---- !u!1001 &1458750314
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 5307686572584195808, guid: a0be5594796721e44a110e568d44f452, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 26
-      objectReference: {fileID: 0}
-    - target: {fileID: 5307686572584195808, guid: a0be5594796721e44a110e568d44f452, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: -45
-      objectReference: {fileID: 0}
-    - target: {fileID: 5307686572584195808, guid: a0be5594796721e44a110e568d44f452, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5307686572584195808, guid: a0be5594796721e44a110e568d44f452, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5307686572584195808, guid: a0be5594796721e44a110e568d44f452, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5307686572584195808, guid: a0be5594796721e44a110e568d44f452, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5307686572584195808, guid: a0be5594796721e44a110e568d44f452, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5307686572584195808, guid: a0be5594796721e44a110e568d44f452, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5307686572584195808, guid: a0be5594796721e44a110e568d44f452, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5307686572584195808, guid: a0be5594796721e44a110e568d44f452, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7864620073621150078, guid: a0be5594796721e44a110e568d44f452, type: 3}
-      propertyPath: m_Name
-      value: Waypoint Circle
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: a0be5594796721e44a110e568d44f452, type: 3}
 --- !u!4 &1472419052 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4566201071196830945, guid: ca63139e84d77ec4fbf437e9fb5c3c50, type: 3}
@@ -2473,8 +2419,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 1543037850}
+  maxIterations: 30
   rayCastDistance: 2
   checkRadius: 1.5
+  moveSpeed: 20
+  damageToOthers: 1
   waypointCircle: {fileID: 7864620073621150078, guid: a0be5594796721e44a110e568d44f452, type: 3}
 --- !u!212 &1529093282
 SpriteRenderer:
@@ -3950,4 +3899,3 @@ SceneRoots:
   - {fileID: 1103997970}
   - {fileID: 1157599350}
   - {fileID: 780530849222873501}
-  - {fileID: 1458750314}

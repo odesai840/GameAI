@@ -7,11 +7,11 @@ public class Obstacle : MonoBehaviour
     [SerializeField] private float damage = 10f;
     private PlayerHealth playerRef;
 
-    private void OnCollisionEnter2D(Collision2D collision)
+    private void OnCollisionEnter2D(Collision2D other)
     {
-        if (collision.gameObject.GetComponent<PlayerHealth>())
+        if (other.gameObject.GetComponent<PlayerHealth>())
         {
-            playerRef = collision.gameObject.GetComponent<PlayerHealth>();
+            playerRef = other.gameObject.GetComponent<PlayerHealth>();
             playerRef.TakeDamage(damage);
         }
     }
