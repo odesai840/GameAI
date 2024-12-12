@@ -9,7 +9,7 @@ using static UnityEngine.EventSystems.EventTrigger;
 
 public class PoliceAI : MonoBehaviour
 {
-    public GameObject player;
+    private GameObject player;
     private Rigidbody2D rb;
     private LineRenderer lineRenderer;
 
@@ -33,9 +33,9 @@ public class PoliceAI : MonoBehaviour
 
     // Collision things
     [Tooltip("Damage dealt to player")]
-    [SerializeField] private float damageToOthers = 1f;
+    [SerializeField] private float damageToOthers = 10f;
     [Tooltip("Wait time for damage over time")]
-    [SerializeField] private float DoTWaitTime = 0.5f;
+    [SerializeField] private float DotWaitTime = 0.5f;
     private Coroutine damageCoroutine;
 
     // Colliders to avoid
@@ -48,6 +48,7 @@ public class PoliceAI : MonoBehaviour
 
     void Start()
     {
+        player = GameObject.FindWithTag("Player");
         rb = GetComponent<Rigidbody2D>();
         lineRenderer = GetComponent<LineRenderer>();
         
@@ -55,6 +56,7 @@ public class PoliceAI : MonoBehaviour
         playerCollider = player.GetComponent<Collider2D>();
         selfCollider = GetComponent<Collider2D>();
     }
+
     void Update()
     {
         CheckPlayerLocation();
@@ -99,7 +101,7 @@ public class PoliceAI : MonoBehaviour
         while (true)
         {
             playerHealth.TakeDamage(damageToOthers);
-            yield return new WaitForSeconds(DoTWaitTime);
+            yield return new WaitForSeconds(DotWaitTime);
         }
     }
 
@@ -118,7 +120,7 @@ public class PoliceAI : MonoBehaviour
         rb.rotation = angle - 90f;  // Adjust for sprite rotation
 
         // Check if the police AI reached the waypoint
-        if (Vector2.Distance(rb.position, targetPosition) <= 0.1f)
+        if (Vector2.Distance(rb.position, targetPosition) <= 0.1)
         {
             currentWaypointIndex++;
         }
@@ -131,6 +133,7 @@ public class PoliceAI : MonoBehaviour
         distanceToPlayer = Vector2.Distance(rb.position, playerPosition);
         dirToPlayer = (playerPosition - rb.position).normalized;
     }
+
     private void Pathfind()
     {
         wayPoints.Clear(); // Clear the list of waypoints

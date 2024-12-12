@@ -4,6 +4,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using UnityEditor.Build.Content;
 
 public class PlayerHealth : MonoBehaviour
 {
@@ -38,8 +39,12 @@ public class PlayerHealth : MonoBehaviour
     void Update()
     {
         health = Mathf.Clamp(health, 0f, maxHealth);
-        //Debug.Log(health);
         UpdateHealthUI();
+
+        if(health <= 0)
+        {
+            SceneManager.LoadScene("DeathScreen");
+        }
     }
 
     public void UpdateHealthUI()
